@@ -1,0 +1,11 @@
+faculty_id,category,FDCDC1,FDCDC2,FDCDC3,FDCDC4,FDELE1,FDELE2,FDELE3,FDELE4,HDCDC1,HDCDC2,HDELE1,HDELE2
+1,x2,math1,physics1,math2,physics2,quantum,graph,tor,number,advmath,advphy,advgraph,advtor
+2,x1,chemistry1,biology1,chemistry2,biology2,thermo,fluids,signals,controls,math1,physics1,math2,physics2
+3,x3,english1,history1,english2,history2,econ,stats,psych,philosophy,chem1,biology1,chem2,biology2
+4,x2,advmath,advphy,advgraph,advtor,math1,physics1,math2,physics2,quantum,graph,tor,number
+5,x1,math1,physics1,math2,physics2,english1,history1,english2,history2,econ,stats,psych,philosophy
+6,x3,chemistry1,biology1,chemistry2,biology2,thermo,fluids,signals,controls,advmath,advphy,advgraph,advtor
+7,x2,english1,history1,english2,history2,econ,stats,psych,philosophy,math1,physics1,math2,physics2
+8,x1,advmath,advphy,advgraph,advtor,chemistry1,biology1,chemistry2,biology2,thermo,fluids,signals,controls
+9,x3,quantum,graph,tor,number,english1,history1,english2,history2,econ,stats,psych,philosophy
+10,x2,advmath,advphy,advgraph,advtor,math1,physics1,math2,physics2,quantum,graph,tor,number
