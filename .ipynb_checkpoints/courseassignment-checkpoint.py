@@ -14,7 +14,6 @@ class CourseAssignmentVariable():
         # Preferences structure: {"math1": "FDCDC1", "physics1": "FDCDC2", ...}
         self.preferences = {}
         self.update_preferences(preferences)
-        self.assigned_courses = []
 
     def __hash__(self):
         return hash((self.faculty_id, self.category, tuple(self.preferences.items())))
@@ -37,7 +36,7 @@ class CourseAssignmentVariable():
         for key, value in preferences.items():
             if key.startswith(("FDCDC", "FDELE", "HDCDC", "HDELE")):
                 buffer = key
-                key = f"{value}"
+                key = value
                 value = buffer
                 self.preferences[key] = value
 

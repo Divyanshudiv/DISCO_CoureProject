@@ -57,17 +57,21 @@ class AssignmentCreator():
             if faculty not in assignment:
                 if unassigned_faculty is None:
                     unassigned_faculty = faculty
-                # elif len(self.domains[faculty]) == len(self.domains[unassigned_faculty]):
-                    # if len(self.courseassignment.neighbors(faculty)) > len(self.courseassignment.neighbors(unassigned_faculty)):
-                        # unassigned_faculty = faculty
+                    break
+                else:
+                    if len(self.courseassignment.neighbors(faculty)) > len(self.courseassignment.neighbors(unassigned_faculty)):
+                        unassigned_faculty = faculty
+                        break
             else:
                 load_available = self.available_load(faculty, assignment)
                 if load_available >= 0.5:
                     if unassigned_faculty is None:
                         unassigned_faculty = faculty
-                    # elif len(self.domains[faculty]) == len(self.domains[unassigned_faculty]):
-                        # if len(self.courseassignment.neighbors(faculty)) > len(self.courseassignment.neighbors(unassigned_faculty)):
-                            # unassigned_faculty = faculty
+                        break
+                    else:
+                        if len(self.courseassignment.neighbors(faculty)) > len(self.courseassignment.neighbors(unassigned_faculty)):
+                            unassigned_faculty = faculty
+                            break
         
         return unassigned_faculty
 
@@ -95,7 +99,7 @@ class AssignmentCreator():
                         else:
                             new_assignment[faculty].append({course: min(1, self.available_load(faculty, new_assignment))})
                     else:
-                        continue
+                        break
                         
                     result = self.backtrack(new_assignment)
                     if result is not None:
@@ -107,7 +111,7 @@ class AssignmentCreator():
 def main():
 
     if len(sys.argv) != 3:
-        sys.exit("Usage: python generate.py preferences [output]")
+        sys.exit("Usage: python3 generate.py preferences [output]")
 
     preferences_file = sys.argv[1]
     output = sys.argv[2]
