@@ -1,5 +1,5 @@
 import sys
-import copy
+from copy import deepcopy
 import random
 
 from courseassignment import *
@@ -16,6 +16,7 @@ class AssignmentCreator():
             }
             for faculty in self.courseassignment.faculty_list
         }
+        self.backtrack_count = 0
 
     def save(self, assignment, filename):
         """Outputs the Assignment onto a Text File."""
@@ -26,7 +27,7 @@ class AssignmentCreator():
                     course, load = list(course_dict.keys())[0], list(course_dict.values())[0]
                     file.write(f"{faculty.preferences[course]}, {course} -> {load}, ")
                 file.write("\n")
-            file.write("\n")
+            file.write(f"backtrack count: {self.backtrack_count}\n\n")
 
     def solve(self):
         return self.backtrack(dict(), self.domains)
@@ -41,33 +42,38 @@ class AssignmentCreator():
 
     def enforce_node_consistency(self, faculty, course, assignment, domains):
         """Removes the Recently Assigned Course from the Faculty."""
-        #possible addition: remove faculty from the copy domains if available_load == 0
-        if course in list(self.domains[faculty].keys()):
-            del self.domains[faculty][course]
+        if course in list(domains[faculty].keys()):
+            del domains[faculty][course]
+
+        if self.available_load(faculty, assignment) == 0:
+            del domains[faculty]
 
     def enforce_arc_consistency(self, faculty, course, assignment, domains):
         """Removes or Reduces Course Load from Neighboring Faculties."""
-        #could change neighbors where only those neighbors are found which have the given course in common
         courses_to_remove = []
         course_load = 0
         for assigned_courses in assignment[faculty]:
             for course_check, course_load_check in assigned_courses.items():
                 if course_check == course:
                     course_load = course_load_check
+                    
         for neighbor in self.courseassignment.neighbors(faculty):
-            if course in list(self.domains[neighbor].keys()):
-                self.domains[neighbor][course] -= course_load
-                if (self.domains[neighbor][course] == 0):
-                    courses_to_remove.append((neighbor, course))
+            if neighbor in domains:
+                if course in list(domains[neighbor].keys()):
+                    domains[neighbor][course] -= course_load
+                    if (domains[neighbor][course] == 0):
+                        courses_to_remove.append((neighbor, course))
 
         for neighbor, course in courses_to_remove:
-            del self.domains[neighbor][course]
+            if neighbor in domains and course in domains[neighbor]:
+                del domains[neighbor][course]
+                if not domains[neighbor]:
+                    del domains[neighbor]
     
-    def select_unassigned_faculty(self, assignment):
+    def select_unassigned_faculty(self, assignment, domains):
         """Returns Faculty that are Unassigned or not Fully Assigned."""
         unassigned_faculty = None
-        #needs to be changed so that only a random faculty is choosed
-        for faculty in random.sample(list(self.domains), len(self.domains)):
+        for faculty in random.sample(list(domains), len(domains)):
             if faculty not in assignment:
                 if unassigned_faculty is None:
                     unassigned_faculty = faculty
@@ -98,12 +104,12 @@ class AssignmentCreator():
         if all_faculties_assigned:
             return assignment
 
-        faculty = self.select_unassigned_faculty(assignment)
+        faculty = self.select_unassigned_faculty(assignment, domains)
         if faculty is not None:
-            for course, course_load_available in self.domains[faculty].items():
+            for course, course_load_available in domains[faculty].items():
                 if course_load_available > 0:
-                    new_assignment = assignment.copy()
-                    new_domains = domains.copy()
+                    new_assignment = deepcopy(assignment)
+                    new_domains = deepcopy(domains)
 
                     if faculty not in new_assignment:
                         new_assignment[faculty] = []
@@ -116,12 +122,12 @@ class AssignmentCreator():
                     else:
                         break
 
-                    self.enforce_node_consistency(faculty, course, new_assignment, new_domains)
                     self.enforce_arc_consistency(faculty, course, new_assignment, new_domains)
+                    self.enforce_node_consistency(faculty, course, new_assignment, new_domains)
                     result = self.backtrack(new_assignment, new_domains)
                     if result is not None:
                         return result
-
+        self.backtrack_count += 1
         return None
                     
 

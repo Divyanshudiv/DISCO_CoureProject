@@ -16,6 +16,7 @@ class AssignmentCreator():
             }
             for faculty in self.courseassignment.faculty_list
         }
+        self.backtrack_count = 0
     
     def save(self, assignment, filename):
         """Outputs the Assignment onto a Text File."""
@@ -26,7 +27,7 @@ class AssignmentCreator():
                     course, load = list(course_dict.keys())[0], list(course_dict.values())[0]
                     file.write(f"{faculty.preferences[course]}, {course} -> {load}, ")
                 file.write("\n")
-            file.write("\n")
+            file.write(f"{self.backtrack_count}\n")
      
     def solve(self):
         return self.backtrack(dict())
@@ -53,7 +54,8 @@ class AssignmentCreator():
         """Returns Faculty that are Unassigned or not Fully Assigned."""
         unassigned_faculty = None
     
-        for faculty in random.sample(list(self.domains), len(self.domains)):
+        #for faculty in random.sample(list(self.domains), len(self.domains)):
+        for faculty in self.domains:
             if faculty not in assignment:
                 if unassigned_faculty is None:
                     unassigned_faculty = faculty
@@ -104,7 +106,7 @@ class AssignmentCreator():
                     result = self.backtrack(new_assignment)
                     if result is not None:
                         return result
-    
+        self.backtrack_count += 1
         return None
         
 
