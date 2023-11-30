@@ -21,7 +21,7 @@ for faculty_num in range(Subjects_generator.dataset):
     preference_dict[faculty_id] = [Subjects_generator.course[faculty_num], pref_order]
 
 
-with open("Faculty_data.csv", "w") as file:
+with open("Faculty_data.csv", "w", newline = "") as file:
     writer = csv.writer(file)
     headings = ["FacultyID", "Category", "Preference 1", "Preference 2", "Preference 3", "Preference 4", "Preference 5", "Preference 6", "Preference 7", "Preference 8", "Preference 9", "Preference 10", "Preference 11", "Preference 12"]
     writer.writerow(headings)
