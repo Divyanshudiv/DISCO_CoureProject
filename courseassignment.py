@@ -45,13 +45,16 @@ class Courseassignment():
     """Takes Input from Input CSV File and Creates Objects of CourseAssignmentVariable also defines Overlaps and Neighbors between Faculty Objects."""
     def __init__(self, data_file):
         self.faculty_list = []
+        self.courses = set()
         with open(data_file, "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
                 faculty = CourseAssignmentVariable(row['FacultyID'], row['Category'], row)
-                print(row['FacultyID'], row['Category'], row)
+                for i in range(12):
+                    self.courses.add(row[f"Preference {i+1}"])
                 self.faculty_list.append(faculty)
-
+        
+    1
         self.overlaps = dict()
         for v1 in self.faculty_list:
             for v2 in self.faculty_list:
