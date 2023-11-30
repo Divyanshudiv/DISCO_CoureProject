@@ -11,25 +11,36 @@ class AssignmentCreator():
         self.courseassignment = courseassignment
         self.domains = {
             faculty: {
-                course : 1
+                course: 1
                 for course in faculty.preferences.copy()
             }
             for faculty in self.courseassignment.faculty_list
         }
         self.backtrack_count = 0
 
+    def valid_data_check(self):
+        """Checks if the Input Data given is Valid or not."""
+        total_load = 0
+        for faculty in self.courseassignment.faculty_list:
+            total_load += faculty.max_load
+        if(len(self.courseassignment.courses) != total_load):
+            print("Invalid Data")
+            return 0
+        return 1
+        
     def save(self, assignment, filename):
         """Outputs the Assignment onto a Text File."""
         with open(filename, "a") as file:  # Use "a" for append mode
             for faculty in assignment:
-                file.write(f"Faculty {faculty.faculty_id} {faculty.max_load} {self.available_load(faculty, assignment)}: ")
+                file.write(f"{faculty.faculty_id}, Max Load: {faculty.max_load}, Available Load: {self.available_load(faculty, assignment)}, ")
                 for course_dict in assignment[faculty]:
                     course, load = list(course_dict.keys())[0], list(course_dict.values())[0]
-                    file.write(f"{faculty.preferences[course]}, {course} -> {load}, ")
+                    file.write(f"{faculty.preferences[course]}: {course} -> {load}, ")
                 file.write("\n")
-            file.write(f"backtrack count: {self.backtrack_count}\n\n")
+            file.write(f"Backtrack Count: {self.backtrack_count}\n\n")
 
     def solve(self):
+        print("Generating Assignment...")
         return self.backtrack(dict(), self.domains)
 
     def available_load(self, faculty, assignment):
@@ -125,10 +136,10 @@ class AssignmentCreator():
                         return result
         self.backtrack_count += 1
         if self.backtrack_count % 10000 == 0:
-            print(self.backtrack_count)
-            #result = self.backtrack()
-        #if len(assignment) <= 0.85 * len(self.courseassignment.faculty_list):
-        if len(assignment) <= 45:
+            print(f"Backtrack Count: {self.backtrack_count}")
+        if (len(assignment) <= len(self.courseassignment.faculty_list) - 5) or (self.backtrack_count == 100000):
+            self.backtrack_count = 0
+            print("Recalibrating...")
             return self.backtrack(dict(), self.domains)
         return None
                     
@@ -143,6 +154,9 @@ def main():
 
     courseassignment = Courseassignment(preferences_file)
     assignmentcreator = AssignmentCreator(courseassignment)
+    validity_check = assignmentcreator.valid_data_check()
+    if validity_check == 0:
+        sys.exit()
     assignment = assignmentcreator.solve()
 
     if assignment is None:
