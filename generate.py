@@ -54,8 +54,8 @@ class AssignmentCreator():
         """Returns Faculty that are Unassigned or not Fully Assigned."""
         unassigned_faculty = None
     
-        #for faculty in random.sample(list(self.domains), len(self.domains)):
-        for faculty in self.domains:
+        for faculty in random.sample(list(self.domains), len(self.domains)):
+        #for faculty in self.domains:
             if faculty not in assignment:
                 if unassigned_faculty is None:
                     unassigned_faculty = faculty

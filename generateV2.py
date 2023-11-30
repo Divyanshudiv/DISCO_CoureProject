@@ -22,7 +22,7 @@ class AssignmentCreator():
         """Outputs the Assignment onto a Text File."""
         with open(filename, "a") as file:  # Use "a" for append mode
             for faculty in assignment:
-                file.write(f"Faculty {faculty.faculty_id} {faculty.max_load}: ")
+                file.write(f"Faculty {faculty.faculty_id} {faculty.max_load} {self.available_load(faculty, assignment)}: ")
                 for course_dict in assignment[faculty]:
                     course, load = list(course_dict.keys())[0], list(course_dict.values())[0]
                     file.write(f"{faculty.preferences[course]}, {course} -> {load}, ")
@@ -75,23 +75,19 @@ class AssignmentCreator():
         unassigned_faculty = None
         for faculty in random.sample(list(domains), len(domains)):
             if faculty not in assignment:
-                if unassigned_faculty is None:
+                if unassigned_faculty is None or len(domains[faculty]) < len(domains[unassigned_faculty]):
                     unassigned_faculty = faculty
-                    break
                 else:
                     if len(self.courseassignment.neighbors(faculty)) > len(self.courseassignment.neighbors(unassigned_faculty)):
                         unassigned_faculty = faculty
-                        break
             else:
                 load_available = self.available_load(faculty, assignment)
                 if load_available >= 0.5:
-                    if unassigned_faculty is None:
+                    if unassigned_faculty is None or len(domains[faculty]) < len(domains[unassigned_faculty]):
                         unassigned_faculty = faculty
-                        break
                     else:
                         if len(self.courseassignment.neighbors(faculty)) > len(self.courseassignment.neighbors(unassigned_faculty)):
                             unassigned_faculty = faculty
-                            break
 
         return unassigned_faculty
 
@@ -128,6 +124,11 @@ class AssignmentCreator():
                     if result is not None:
                         return result
         self.backtrack_count += 1
+        if self.backtrack_count % 10000 == 0:
+            print(self.backtrack_count)
+            #result = self.backtrack()
+        if len(assignment) <= 0.85 * len(self.courseassignment.faculty_list):
+            return self.backtrack(dict(), self.domains)
         return None
                     
 
