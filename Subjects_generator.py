@@ -6,7 +6,7 @@ fd_subjects = []
 hd_subjects = []
 FD_Final = []
 HD_Final = []
-dataset = 180
+dataset = 50
 
 faculty_types = ["x1", "x2", "x3"]
 

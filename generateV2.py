@@ -127,7 +127,8 @@ class AssignmentCreator():
         if self.backtrack_count % 10000 == 0:
             print(self.backtrack_count)
             #result = self.backtrack()
-        if len(assignment) <= 0.85 * len(self.courseassignment.faculty_list):
+        #if len(assignment) <= 0.85 * len(self.courseassignment.faculty_list):
+        if len(assignment) <= 45:
             return self.backtrack(dict(), self.domains)
         return None
                     

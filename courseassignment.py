@@ -54,7 +54,7 @@ class Courseassignment():
                 for i in range(12):
                     self.courses.add(row[f"Preference {i+1}"])
                 self.faculty_list.append(faculty)
-        if(len(self.courses) != int(Subjects_generator.subjects_needed)):
+        if(len(self.courses) <= int(Subjects_generator.subjects_needed)):
             print("The dataset is not valid as the number of courses required do not match with the requirement of the faculty.")
             
         
