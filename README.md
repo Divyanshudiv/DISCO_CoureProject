@@ -8,4 +8,10 @@ The primary objective of this research problem is to develop an assignment schem
 
 This problem is unique due to the flexibility it offers regarding the number of courses faculty members can take, distinct from typical Assignment problems. Potential modifications may include adjusting the maximum number of courses "y" for each category of professors, instead of requiring exact adherence, or extending the number of professor categories beyond the existing three to devise a more generalised solution.
 
-The aim is to achieve a good degree of optimization on this constraint satisfaction problem through enforcing node consistency, arc consistency and utilizing techniques like backtracking and simulated annealing.
+---------------------------------------------------------------------------------------------------------------------------------------------
+The aim is to achieve a good degree of optimization on this constraint satisfaction problem through enforcing node consistency, arc consistency and utilizing techniques like backtracking.
+
+Currently the program is able to optimally assign upto 30 faculties.
+
+#To run the program use python3 generateV2.py input.csv output.txt
+
