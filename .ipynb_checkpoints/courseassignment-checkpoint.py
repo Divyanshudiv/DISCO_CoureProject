@@ -1,17 +1,16 @@
 import csv
+import Subjects_generator
 
 
 class CourseAssignmentVariable():
     """Creates a Faculty Variable."""
     CATEGORIES = {"x1": {"max_load": 0.5}, "x2": {"max_load": 1}, "x3": {"max_load": 1.5}}
-    MIN_PREFERENCES = {"FDCDC": 4, "FDElE": 4, "HDCDC": 2, "HDElE": 2} #To Be Implemented
 
     def __init__(self, faculty_id, category, preferences):
         """Create a new course assignment variable for faculty."""
         self.faculty_id = faculty_id
         self.category = category
         self.max_load = self.CATEGORIES.get(category, {}).get("max_load", 0)
-        # Preferences structure: {"math1": "FDCDC1", "physics1": "FDCDC2", ...}
         self.preferences = {}
         self.update_preferences(preferences)
 
@@ -24,12 +23,6 @@ class CourseAssignmentVariable():
             (self.category == other.category) and
             (self.preferences == other.preferences)
         )
-
-    def __str__(self):
-        return f"Faculty {self.faculty_id} ({self.category}, Max Load: {self.max_load}, Preferences: {self.preferences})"
-
-    def __repr__(self):
-        return f"CourseAssignmentVariable({self.faculty_id}, {self.category}, {self.preferences})"
         
     def update_preferences(self, preferences):
         """Update preferences based on the input."""
@@ -43,6 +36,7 @@ class CourseAssignmentVariable():
 
 class Courseassignment():
     """Takes Input from Input CSV File and Creates Objects of CourseAssignmentVariable also defines Overlaps and Neighbors between Faculty Objects."""
+    
     def __init__(self, data_file):
         self.faculty_list = []
         self.courses = set()
@@ -53,8 +47,9 @@ class Courseassignment():
                 for i in range(12):
                     self.courses.add(row[f"Preference {i+1}"])
                 self.faculty_list.append(faculty)
-        
-    1
+        if (len(self.courses) <= int(Subjects_generator.subjects_needed)):
+            print(f"{len(self.courses)}The dataset is not valid as the number of courses required do not match with the requirement of the faculty.")
+            
         self.overlaps = dict()
         for v1 in self.faculty_list:
             for v2 in self.faculty_list:
