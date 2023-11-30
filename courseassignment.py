@@ -35,7 +35,7 @@ class CourseAssignmentVariable():
     def update_preferences(self, preferences):
         """Update preferences based on the input."""
         for key, value in preferences.items():
-            if key.startswith(("FDCDC", "FDELE", "HDCDC", "HDELE")):
+            if key.startswith("Preference"):
                 buffer = key
                 key = value
                 value = buffer
@@ -50,10 +50,12 @@ class Courseassignment():
         with open(data_file, "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
-                faculty = CourseAssignmentVariable(row['faculty_id'], row['category'], row)
+                faculty = CourseAssignmentVariable(row['FacultyID'], row['Category'], row)
+                for i in range(12):
+                    self.courses.add(row[f"Preference {i+1}"])
                 self.faculty_list.append(faculty)
-                
-
+        
+    1
         self.overlaps = dict()
         for v1 in self.faculty_list:
             for v2 in self.faculty_list:

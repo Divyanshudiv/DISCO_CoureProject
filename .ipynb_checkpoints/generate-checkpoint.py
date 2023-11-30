@@ -16,6 +16,7 @@ class AssignmentCreator():
             }
             for faculty in self.courseassignment.faculty_list
         }
+        self.backtrack_count = 0
     
     def save(self, assignment, filename):
         """Outputs the Assignment onto a Text File."""
@@ -26,7 +27,7 @@ class AssignmentCreator():
                     course, load = list(course_dict.keys())[0], list(course_dict.values())[0]
                     file.write(f"{faculty.preferences[course]}, {course} -> {load}, ")
                 file.write("\n")
-            file.write("\n")
+            file.write(f"{self.backtrack_count}\n")
      
     def solve(self):
         return self.backtrack(dict())
@@ -54,20 +55,25 @@ class AssignmentCreator():
         unassigned_faculty = None
     
         for faculty in random.sample(list(self.domains), len(self.domains)):
+        #for faculty in self.domains:
             if faculty not in assignment:
                 if unassigned_faculty is None:
                     unassigned_faculty = faculty
-                # elif len(self.domains[faculty]) == len(self.domains[unassigned_faculty]):
-                    # if len(self.courseassignment.neighbors(faculty)) > len(self.courseassignment.neighbors(unassigned_faculty)):
-                        # unassigned_faculty = faculty
+                    break
+                else:
+                    if len(self.courseassignment.neighbors(faculty)) > len(self.courseassignment.neighbors(unassigned_faculty)):
+                        unassigned_faculty = faculty
+                        break
             else:
                 load_available = self.available_load(faculty, assignment)
                 if load_available >= 0.5:
                     if unassigned_faculty is None:
                         unassigned_faculty = faculty
-                    # elif len(self.domains[faculty]) == len(self.domains[unassigned_faculty]):
-                        # if len(self.courseassignment.neighbors(faculty)) > len(self.courseassignment.neighbors(unassigned_faculty)):
-                            # unassigned_faculty = faculty
+                        break
+                    else:
+                        if len(self.courseassignment.neighbors(faculty)) > len(self.courseassignment.neighbors(unassigned_faculty)):
+                            unassigned_faculty = faculty
+                            break
         
         return unassigned_faculty
 
@@ -95,19 +101,19 @@ class AssignmentCreator():
                         else:
                             new_assignment[faculty].append({course: min(1, self.available_load(faculty, new_assignment))})
                     else:
-                        continue
+                        break
                         
                     result = self.backtrack(new_assignment)
                     if result is not None:
                         return result
-    
+        self.backtrack_count += 1
         return None
         
 
 def main():
 
     if len(sys.argv) != 3:
-        sys.exit("Usage: python generate.py preferences [output]")
+        sys.exit("Usage: python3 generate.py preferences [output]")
 
     preferences_file = sys.argv[1]
     output = sys.argv[2]

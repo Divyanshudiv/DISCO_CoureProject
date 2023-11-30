@@ -14,7 +14,6 @@ class CourseAssignmentVariable():
         # Preferences structure: {"math1": "FDCDC1", "physics1": "FDCDC2", ...}
         self.preferences = {}
         self.update_preferences(preferences)
-        self.assigned_courses = []
 
     def __hash__(self):
         return hash((self.faculty_id, self.category, tuple(self.preferences.items())))
@@ -35,9 +34,9 @@ class CourseAssignmentVariable():
     def update_preferences(self, preferences):
         """Update preferences based on the input."""
         for key, value in preferences.items():
-            if key.startswith(("FDCDC", "FDELE", "HDCDC", "HDELE")):
+            if key.startswith("Preference"):
                 buffer = key
-                key = f"{value}"
+                key = value
                 value = buffer
                 self.preferences[key] = value
 
@@ -46,12 +45,16 @@ class Courseassignment():
     """Takes Input from Input CSV File and Creates Objects of CourseAssignmentVariable also defines Overlaps and Neighbors between Faculty Objects."""
     def __init__(self, data_file):
         self.faculty_list = []
+        self.courses = set()
         with open(data_file, "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
-                faculty = CourseAssignmentVariable(row['faculty_id'], row['category'], row)
+                faculty = CourseAssignmentVariable(row['FacultyID'], row['Category'], row)
+                for i in range(12):
+                    self.courses.add(row[f"Preference {i+1}"])
                 self.faculty_list.append(faculty)
-
+        
+    1
         self.overlaps = dict()
         for v1 in self.faculty_list:
             for v2 in self.faculty_list:
