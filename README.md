@@ -26,4 +26,6 @@ Faculty_data.csv.
 #To create a new dataset, first set the dataset variable in the Subjects_Generator.py as the number of faculty for which you want to generate the data. Then use python3 preference_assignment.py. This will create Faculty_data.csv.
 #To run the assignment program use python3 generateV2.py input.csv output.txt
 
-
+---------------------------------------------------------------------------------------------------------------------------------------------
+We have uploaded the explanation video in a Google Drive folder as GitHub wasn't allowing us to upload such a big file
+Link to the google drive folder: https://drive.google.com/drive/folders/1faJwTwhEXb6dU7VX0IoChnXPIWqVJE0B?usp=sharing
