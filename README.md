@@ -1,4 +1,4 @@
-# DISCO_CourseProject
+# TheCourseAssignment
 An Application of Graph Optimization-Course Project
 The research problem at hand revolves around the optimization of the University Course Assignment System. Within a department, there are "n" faculty members categorised into three distinct groups: "x1," "x2," and "x3." Faculty in each category are assigned different course loads, with "x1" handling 0.5 courses per semester, "x2" taking 1 course per semester, and "x3" managing 1.5 courses per semester.
 
